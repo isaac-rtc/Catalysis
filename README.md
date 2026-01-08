@@ -1,6 +1,9 @@
 # Stack the Future 2026
 
-# Team Members - Isaac
+# Team Members
+# Isaac
+#
+#
 
 This template can be used as a starting point for developing your own application during the hackathon. The template is a [Flask](https://flask.palletsprojects.com/en/stable/) project - you can find a quick tutorial about Flask and its best practices [here](https://flask.palletsprojects.com/en/stable/tutorial/).
 
