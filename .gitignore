@@ -168,4 +168,4 @@ cython_debug/
 #.idea/
 
 # PyPI configuration file
-.pypirc
+.pypircMiniconda3-latest-Linux-x86_64.sh
