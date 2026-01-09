@@ -59,11 +59,11 @@
   <div class="right-pane">
     <div class="toxicity-map-card">
         <h2>Toxicity Predictor Map</h2>
-        <p>Click Generate Map to see the toxicity prediction of the molecule. Highlighted in purple atoms shows areas prone to causing toxicity, green areas represent strong bonds.</p>
+        <p>Click Generate Map to see the toxicity prediction of the molecule. </p>
         <button onclick="getPrediction()">Generate Map</button>
         <p class="loading" id="loader">Processing molecule...</p>
 
-        <div id="result" style="display: none;">
+        <div id="result" class="result" style="display: none;">
             <h3>Toxicity Probability: <span id="prob-value" >0</span></h3>
             
             <img id="map-image" src="" alt="Processing Map"/>
