@@ -116,7 +116,7 @@
     /* slightly taller */
     border: none;
 }
-
+/* Model css */
 .right-pane button {
     cursor: pointer;
     width: 100%;
@@ -165,3 +165,4 @@
 .legend-dot.green {
   background-color: #22c55e; /* strong bond green */
 }
+
