@@ -139,8 +139,8 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid #e5e7eb; 
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb; 
   font-size: 14px;
   color: #374151; /* neutral gray */
 }
