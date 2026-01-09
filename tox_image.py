@@ -47,8 +47,7 @@ def index():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    data = request.json
-    smiles = data.get("smiles")
+    smiles = request.get_json()["smiles"]
 
     mol = Chem.MolFromSmiles(smiles)
     if not mol:
