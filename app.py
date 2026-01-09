@@ -23,7 +23,7 @@ def root():
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
     smiles = request.get_json()["smiles"]
-    print(f"SMILES: {smiles}")
+
     if not OPENAI_ENABLED:
         return jsonify(
             {

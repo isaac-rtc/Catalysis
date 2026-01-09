@@ -29,21 +29,19 @@
   <body class="bg-light">
 
     <!-- Main content -->
-    <div class="container py-5">
-      <h1 class="mb-3">Chemistry Research Assistant</h1>
-      <p class="text-muted mb-4">
-        RDKit-based molecular analysis with LLM-assisted interpretation.
+    <div class="container py-1">
+      <h1 style="font-size: 2.25rem; margin-bottom: 0 0 0.25rem 0;">
+        ToxVision
+      </h1>
+
+      <p style="font-size: 1.1rem; color: #6c757d; margin-bottom: 0.75rem;">
+        Finding toxicity problems before synthesis!
       </p>
 
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <p class="mb-2">
-            Use the assistant below to analyze a molecule.
-          </p>
-          <p class="text-muted small mb-0">
-            (SMILES is currently hardcoded in the backend.)
-          </p>
-        </div>
+      <p style="font-size: 1rem;">
+        Go ahead and draw your molecule. We will analyze it.
+      </p>
+    </div>
     
       </div>
       <div class="toxicity-map-card mt-5 p-4 bg-white rounded shadow-sm">
@@ -58,17 +56,31 @@
             <h3>Toxicity Probability: <span id="prob-value">0</span></h3>
             <img id="map-image" src="" alt="Similarity Map">
         </div>
-      </div>
-    </div>
 
-    <iframe data-sketcher src="{{ url_for('static', filename='sketcher/wasm_shell.html') }}" style="height: 500px; width: 500px;"></iframe>
+
+    <div class="app-layout">
+  <div class="left-pane">
+    <div class="iframe-clip">
+      <iframe
+        src="{{ url_for('static', filename='sketcher/wasm_shell.html') }}"
+        class="sketcher-iframe"
+      ></iframe>
+    </div>
+  </div>
+
+  <div class="right-pane">
+    <p>Other UI goes here</p>
+  </div>
+</div>
+
+
 
     <!-- Pull Up Chatbot assistant -->
     <div id="chatbot" class="chatbot-wrapper collapsed">
 
       <div class="chatbot-header">
-        <span>Research Assistant</span>
-        <i id="chatbot-toggle" class="bi bi-chevron-up"></i>
+      <span class="chatbot-title">Research Assistant</span>
+      <i id="chatbot-toggle" class="bi bi-chevron-up"></i>
       </div>
 
       <div class="chatbot-body">
@@ -76,18 +88,10 @@
           <button class="btn btn-outline-primary" onclick="fakeResponse(this)">
             Run Analysis
           </button>
-
-          <button class="btn btn-outline-secondary" onclick="fakeResponse(this)">
-            Expert Summary
-          </button>
-
-          <button class="btn btn-outline-dark" onclick="fakeResponse(this)">
-            Explain Result
-          </button>
         </div>
 
         <div id="chatbot-response" class="chatbot-response">
-          Click a button to begin.
+          Click a Run Analysis to begin!
         </div>
       </div>
     </div>
