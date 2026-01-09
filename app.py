@@ -74,7 +74,7 @@ def analyze():
     - Do NOT invent data
     - If unsure, say "uncertain"
 
-    Return a clear, readable paragraph response.
+    Return a clear, readable response with bullet points.
     """
 
     # Call OpenAI (THIS is the only billing point)
