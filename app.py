@@ -5,6 +5,8 @@ import os
 
 app = Flask(__name__)
 
+# Initialize OpenAI client
+
 OPENAI_ENABLED = bool(os.getenv("OPENAI_API_KEY"))
 
 
