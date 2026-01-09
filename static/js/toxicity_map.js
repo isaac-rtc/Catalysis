@@ -12,7 +12,7 @@ async function getPrediction() {
     // UI State
     loader.style.display = 'block';
     resultDiv.style.display = 'none';
-
+    mapImg.style.display = 'none';
     try {
         const response = await fetch('/predict', {
             method: 'POST',
@@ -31,8 +31,9 @@ async function getPrediction() {
             // Display the Base64 image
             // The 'data:image/png;base64,' prefix tells the browser how to interpret the string
             mapImg.src = `data:image/png;base64,${data.image_data}`;
-            
             resultDiv.style.display = 'block';
+            mapImg.style.display = 'block';
+            mapImg.style.width = '50%';
         }
     } catch (err) {
         console.error(err);

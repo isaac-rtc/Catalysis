@@ -44,18 +44,6 @@
     </div>
     
       </div>
-      <div class="toxicity-map-card mt-5 p-4 bg-white rounded shadow-sm">
-        <h2>Toxicity Predictor Map</h2>
-        <p>Click Generate Map to see the toxicity prediction of the molecule. Highlighted in purple atoms shows areas prone to causing toxicity, green areas represent strong bonds.</p>
-        <button onclick="getPrediction()">Generate Map</button>
-
-        <p class="loading" id="loader">Processing molecule...</p>
-
-        <div id="result">
-            <h3>Toxicity Probability: <span id="prob-value">0</span></h3>
-            <img id="map-image" src="" alt="Similarity Map">
-        </div>
-
 
     <div class="app-layout">
   <div class="left-pane">
@@ -69,7 +57,29 @@
   </div>
 
   <div class="right-pane">
-    <p>Other UI goes here</p>
+    <div class="toxicity-map-card">
+        <h2>Toxicity Predictor Map</h2>
+        <p>Click Generate Map to see the toxicity prediction of the molecule. Highlighted in purple atoms shows areas prone to causing toxicity, green areas represent strong bonds.</p>
+        <button onclick="getPrediction()">Generate Map</button>
+        <p class="loading" id="loader">Processing molecule...</p>
+
+        <div id="result" style="display: none;">
+            <h3>Toxicity Probability: <span id="prob-value" >0</span></h3>
+            
+            <img id="map-image" src="" alt="Processing Map"/>
+
+            <div class="tox-legend">
+                <div class="legend-item">
+                  <span class="legend-dot purple"></span>
+                  <span class="legend-text">Purple: toxicity risk</span>
+                </div>
+
+                <div class="legend-item">
+                  <span class="legend-dot green"></span>
+                  <span class="legend-text">Green: strong bond</span>
+                </div>
+          </div>
+        </div>
   </div>
 </div>
 
