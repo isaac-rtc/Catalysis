@@ -3,31 +3,34 @@ import numpy as np
 import xgboost as xgb
 from flask import Flask, request, jsonify, render_template
 from rdkit import Chem
-from rdkit.Chem import Draw
+from rdkit.Chem import AllChem, rdMolDescriptors
 from rdkit.Chem.Draw import SimilarityMaps
 from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
 
+
 def load_xgb_model(path):
     # 1. Load the raw booster
     bst = xgb.Booster()
     bst.load_model(path)
-    
+
     # 2. Create the classifier wrapper
     clf = xgb.XGBClassifier()
     clf._Booster = bst
-    
+
     # 3. Manually initialize the label encoder to fix the 'classes_' error
     # This tells the wrapper how to map the 0 and 1 outputs
     le = LabelEncoder()
     le.classes_ = np.array([0, 1])
     clf._le = le
-    
+
     clf.n_classes_ = 2
     return clf
 
+
 model = load_xgb_model("tox_model.json")
+
 
 def xgb_proba_wrapper(fingerprint):
     """
@@ -37,13 +40,15 @@ def xgb_proba_wrapper(fingerprint):
     # Use the Booster directly if the wrapper still gives trouble
     # dmat = xgb.DMatrix(fp_array)
     # prob = model.get_booster().predict(dmat)[0]
-    
+
     prob = model.predict_proba(fp_array)[:, 1][0]
     return float(prob)
+
 
 @app.route("/")
 def index():
     return render_template("base.html")
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -56,7 +61,7 @@ def predict():
     try:
         # 1. Create the drawer
         drawer = Draw.MolDraw2DCairo(600, 600)
-        
+
         # --- CRITICAL: Prepare the molecule coordinates ---
         # If the molecule doesn't have coordinates, the map will be empty
         Chem.rdDepictor.Compute2DCoords(mol)
@@ -69,19 +74,19 @@ def predict():
                 m, atomId=i, radius=2, nBits=2048, fpType="bv"
             ),
             xgb_proba_wrapper,
-            draw2d=drawer  # This tells RDKit to use our canvas
+            draw2d=drawer,  # This tells RDKit to use our canvas
         )
 
         # 3. Finalize the drawing
         drawer.FinishDrawing()
-        
+
         # 4. Get the bytes and encode
         png_data = drawer.GetDrawingText()
-        
+
         # Ensure it is bytes for base64
         if isinstance(png_data, str):
             png_data = png_data.encode("utf-8")
-            
+
         b64_img = base64.b64encode(png_data).decode("utf-8")
 
         # 5. Get overall probability
@@ -94,8 +99,10 @@ def predict():
 
     except Exception as e:
         import traceback
+
         print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
+
 
 print("test")
 
