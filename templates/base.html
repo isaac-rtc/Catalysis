@@ -3,409 +3,81 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Demo application for Schrodinger Stack the Future 2026" />
-    <meta name="keywords" content="hackathon schrodinger" />
 
-    <title>
-      {% block title %}
-        Stack the Future 2026
-      {% endblock title %}
-    </title>
+    <title>Stack the Future 2026 – Research Assistant</title>
 
-    <link rel="icon" href='{{ url_for("static", filename="favicon.svg") }}' sizes="any" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" sizes="any" />
 
-    <style>
-      :root{
-        --sgr-primary: #0067B1; /* change if you have an official hex */
-        --sgr-primary-2: #00A3AD; /* accent */
-        --panel-bg: #0b1220;
-        --panel-bg-2: #0e1a33;
-        --border: rgba(255,255,255,.10);
-        --muted: rgba(255,255,255,.65);
-      }
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
 
-      html, body { width: 100%; height: 100%; overflow: hidden; }
-
-      .app-shell{
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .app-main{
-        flex: 1 1 auto;
-        min-height: 0;
-        display: flex;
-        gap: 12px;
-        padding: 12px;
-      }
-
-      .panel{
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-        min-height: 0;
-      }
-
-      .panel-header{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap: 10px;
-        padding: 10px 12px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .panel-title{
-        font-weight: 600;
-        letter-spacing: .2px;
-        color: #fff;
-      }
-
-      .badge-sgr{
-        background: color-mix(in srgb, var(--sgr-primary) 70%, #000);
-        border: 1px solid color-mix(in srgb, var(--sgr-primary) 55%, #fff 0%);
-      }
-
-      /* Left placeholder (sketcher) */
-      .left-panel{
-        flex: 0 0 56%;
-        display:flex;
-        flex-direction:column;
-        min-width: 420px;
-      }
-
-      .sketcher-body{
-        flex: 1 1 auto;
-        min-height: 0;
-        padding: 12px;
-      }
-
-      .sketcher-placeholder{
-        height: 100%;
-        border: 1px dashed color-mix(in srgb, var(--sgr-primary) 55%, #fff 0%);
-        border-radius: 12px;
-        background:
-          radial-gradient(800px 400px at 20% 0%, rgba(0,163,173,.18), transparent 60%),
-          radial-gradient(800px 400px at 80% 10%, rgba(0,103,177,.18), transparent 60%),
-          linear-gradient(180deg, rgba(11,18,32,.75), rgba(11,18,32,.55));
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        text-align:center;
-        padding: 20px;
-        color: var(--muted);
-      }
-
-      /* Right panel */
-      .right-panel{
-        flex: 1 1 auto;
-        display:flex;
-        flex-direction:column;
-        min-width: 380px;
-      }
-
-      .right-split{
-        flex: 1 1 auto;
-        min-height: 0;
-        display:flex;
-        flex-direction:column;
-      }
-
-      /* Top (radiograph) */
-      .radio-wrap{
-        flex: 1 1 50%;
-        min-height: 0;
-        padding: 12px;
-      }
-
-      .radiograph{
-        height: 100%;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background:
-          linear-gradient(180deg, rgba(0,103,177,.10), transparent 45%),
-          linear-gradient(90deg, rgba(0,163,173,.10), transparent 45%),
-          linear-gradient(180deg, rgba(14,26,51,.75), rgba(11,18,32,.65));
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color: var(--muted);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .radiograph::after{
-        content:"";
-        position:absolute;
-        inset:-80px;
-        background: radial-gradient(circle at 30% 30%, rgba(0,163,173,.18), transparent 55%),
-                    radial-gradient(circle at 70% 60%, rgba(0,103,177,.18), transparent 55%);
-        filter: blur(10px);
-        pointer-events:none;
-      }
-
-      /* Bottom (chat agent) */
-      .chat-wrap{
-        flex: 1 1 50%;
-        min-height: 0;
-        padding: 12px;
-        display:flex;
-        flex-direction:column;
-        gap: 10px;
-      }
-
-      .prompt-bar{
-        display:flex;
-        flex-wrap:wrap;
-        gap: 8px;
-      }
-
-      .btn-sgr{
-        --bs-btn-color: #fff;
-        --bs-btn-bg: var(--sgr-primary);
-        --bs-btn-border-color: var(--sgr-primary);
-        --bs-btn-hover-bg: color-mix(in srgb, var(--sgr-primary) 82%, #000);
-        --bs-btn-hover-border-color: color-mix(in srgb, var(--sgr-primary) 82%, #000);
-        --bs-btn-active-bg: color-mix(in srgb, var(--sgr-primary) 70%, #000);
-        --bs-btn-active-border-color: color-mix(in srgb, var(--sgr-primary) 70%, #000);
-      }
-
-      .btn-sgr-outline{
-        --bs-btn-color: #fff;
-        --bs-btn-bg: transparent;
-        --bs-btn-border-color: color-mix(in srgb, var(--sgr-primary) 55%, #fff 0%);
-        --bs-btn-hover-bg: rgba(0,103,177,.16);
-        --bs-btn-hover-border-color: color-mix(in srgb, var(--sgr-primary) 70%, #fff 0%);
-      }
-
-      .chat-feed{
-        flex: 1.6 1 auto;              /* gives more vertical space */
-        min-height: 0;
-        border: 1px solid rgba(0,163,173,.35);
-        border-radius: 14px;
-        padding: 14px;
-        overflow-y: auto;
-      }
-
-      .msg{
-        max-width: 92%;
-        padding: 8px 10px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        margin-bottom: 8px;
-        color: #fff;
-        background: rgba(255,255,255,.03);
-        white-space: pre-wrap;
-      }
-
-      .msg.user{
-        margin-left:auto;
-        background: rgba(0,103,177,.18);
-        border-color: rgba(0,103,177,.35);
-      }
-
-      .msg.agent{
-        margin-right:auto;
-        background: rgba(0,163,173,.14);
-        border-color: rgba(0,163,173,.30);
-      }
-
-      .chat-controls{
-        display:flex;
-        gap: 8px;
-      }
-
-      .chat-controls input{
-        background: rgba(255,255,255,.03);
-        border: 1px solid var(--border);
-        color: #fff;
-      }
-
-      .chat-controls input::placeholder{ color: rgba(255,255,255,.55); }
-
-      /* Footer logo */
-      .footer-logo{
-        height: 26px;
-        opacity: .95;
-      }
-    </style>
-
-    {% block styles %}{% endblock styles %}
+    <!-- Chatbot CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   </head>
 
-  <body>
-    <div class="app-shell">
-      <div class="app-main">
-        {% block content %}
-          <!-- Left: Sketcher placeholder -->
-          <section class="panel left-panel">
-            <div class="panel-header">
-              <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-bezier2"></i>
-                <div class="panel-title">Sketcher</div>
-              </div>
-              <span class="badge badge-sgr text-white rounded-pill px-2 py-1">placeholder</span>
-            </div>
+  <body class="bg-light">
 
-            <div class="sketcher-body">
-              <div class="sketcher-placeholder">
-                <div>
-                  <div class="fw-semibold text-white mb-2">Molecule Sketcher Area</div>
-                  <div class="small">
-                    This is where you’ll embed the sketcher widget later (e.g., RDKit/Ketcher/ChemDoodle).
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+    <!-- Main content -->
+    <div class="container py-5">
+      <h1 class="mb-3">Chemistry Research Assistant</h1>
+      <p class="text-muted mb-4">
+        RDKit-based molecular analysis with LLM-assisted interpretation.
+      </p>
 
-          <!-- Right: Radiograph (top) + Chat Agent (bottom) -->
-          <section class="panel right-panel">
-            <div class="panel-header">
-              <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-ui-radios-grid"></i>
-                <div class="panel-title">Insights</div>
-              </div>
-              <div class="d-flex align-items-center gap-2">
-                <span class="small" style="color:var(--muted)">LLM-ready UI</span>
-              </div>
-            </div>
-
-            <div class="right-split">
-              <!-- Top: radiograph -->
-              <div class="radio-wrap">
-                <div class="radiograph">
-                  <div class="position-relative text-center px-3">
-                    <div class="fw-semibold text-white mb-1">Radiograph / Visualization</div>
-                    <div class="small" style="color:var(--muted)">
-                      Reserve this space for your plot, heatmap, or any molecule-related image.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bottom: chat agent -->
-              <div class="chat-wrap">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-chat-dots"></i>
-                    <div class="fw-semibold text-white">Chat Agent</div>
-                  </div>
-                  <button id="btn-clear" type="button" class="btn btn-sm btn-sgr-outline">
-                    <i class="bi bi-trash3 me-1"></i> Clear
-                  </button>
-                </div>
-
-                <div id="prompt-bar" class="prompt-bar">
-                  <button type="button" class="btn btn-sm btn-sgr" data-prompt="Why is {{ '{variable_name_here}' }} toxic?">
-                    Why is {variable_name_here} toxic?
-                  </button>
-                  <button type="button" class="btn btn-sm btn-sgr" data-prompt="What other combinations are possible for {{ '{variable_name_here}' }}?">
-                    Other possible combinations
-                  </button>
-                  <button type="button" class="btn btn-sm btn-sgr" data-prompt="What are other radiographs/visualizations I should check for {{ '{variable_name_here}' }}?">
-                    Other radiographs
-                  </button>
-                  <button type="button" class="btn btn-sm btn-sgr-outline" data-prompt="Give a 3-bullet summary of key risks and next tests for {{ '{variable_name_here}' }}.">
-                    Quick risk summary
-                  </button>
-                </div>
-
-                <div id="chat-feed" class="chat-feed">
-                  <div class="msg agent">
-                    HELLLOOOOO Click a prompt above (or type below). When your backend is wired, responses can stream here.
-                  </div>
-                </div>
-
-                <div class="chat-controls">
-                  <input id="chat-input" class="form-control form-control-sm" placeholder="Type a question..." />
-                  <button id="btn-send" type="button" class="btn btn-sm btn-sgr">
-                    <i class="bi bi-send me-1"></i> Send
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-        {% endblock content %}
-      </div>
-
-      <div>
-        {% block footer %}
-          <footer class="d-flex flex-column align-items-center fs-6 text-body-tertiary py-4">
-            <div class="d-flex align-items-center gap-2">
-              <img class="footer-logo" src='{{ url_for("static", filename="schrodinger-logo.svg") }}' alt="Schrödinger" />
-              <span>Stack the Future 2026 - New York, New York</span>
-            </div>
-            <span>Copyright &copy; Schrödinger Inc. 2026</span>
-          </footer>
-        {% endblock footer %}
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="mb-2">
+            Use the assistant below to analyze a molecule.
+          </p>
+          <p class="text-muted small mb-0">
+            (SMILES is currently hardcoded in the backend.)
+          </p>
+        </div>
       </div>
     </div>
 
-    <script>
-      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      [...tooltipTriggerList].forEach((el) => new bootstrap.Tooltip(el));
+    <!-- Floating Chatbot (REQUIRED by chatbot.js) -->
+    <div id="chatbot" class="chatbot-wrapper collapsed">
 
-      const chatFeed = document.getElementById("chat-feed");
-      const chatInput = document.getElementById("chat-input");
-      const promptBar = document.getElementById("prompt-bar");
+      <div class="chatbot-header">
+        <span>Research Assistant</span>
+        <i id="chatbot-toggle" class="bi bi-chevron-up"></i>
+      </div>
 
-      function appendMsg(text, who){
-        const div = document.createElement("div");
-        div.className = "msg " + who;
-        div.textContent = text;
-        chatFeed.appendChild(div);
-        chatFeed.scrollTop = chatFeed.scrollHeight;
-      }
+      <div class="chatbot-body">
+        <div class="chatbot-actions">
+          <button class="btn btn-outline-primary" onclick="fakeResponse(this)">
+            Run Analysis
+          </button>
 
-      function renderPromptButtons(config){
-        if (!Array.isArray(config)) return;
-        promptBar.innerHTML = "";
-        config.forEach((item) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "btn btn-sm " + (item.variant === "outline" ? "btn-sgr-outline" : "btn-sgr");
-          btn.dataset.prompt = item.prompt || "";
-          btn.textContent = item.label || "Prompt";
-          promptBar.appendChild(btn);
-        });
-      }
+          <button class="btn btn-outline-secondary" onclick="fakeResponse(this)">
+            Expert Summary
+          </button>
 
-      promptBar.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-prompt]");
-        if (!btn) return;
-        const prompt = btn.dataset.prompt;
-        appendMsg(prompt, "user");
+          <button class="btn btn-outline-dark" onclick="fakeResponse(this)">
+            Explain Result
+          </button>
+        </div>
 
-        // Replace this with your fetch/LLM call later.
-        appendMsg("Response placeholder (connect backend + stream here).", "agent");
-      });
+        <div id="chatbot-response" class="chatbot-response">
+          Click a button to begin.
+        </div>
+      </div>
+    </div>
 
-      document.getElementById("btn-send").addEventListener("click", () => {
-        const value = (chatInput.value || "").trim();
-        if (!value) return;
-        appendMsg(value, "user");
-        chatInput.value = "";
-        appendMsg("Response placeholder (connect backend + stream here).", "agent");
-      });
+    
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
-      chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") document.getElementById("btn-send").click();
-      });
-
-      document.getElementById("btn-clear").addEventListener("click", () => {
-        chatFeed.innerHTML = "";
-        appendMsg("Cleared. Ready for the next prompt.", "agent");
-      });
-
-      // If you later load JSON like: window.PROMPT_CONFIG = [{label,prompt,variant}, ...]
-      // call: renderPromptButtons(window.PROMPT_CONFIG);
-    </script>
-
-    {% block scripts %}{% endblock scripts %}
   </body>
 </html>
