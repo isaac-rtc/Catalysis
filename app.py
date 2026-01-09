@@ -8,6 +8,8 @@ app = Flask(__name__)
 
 # Initialize OpenAI client
 client = OpenAI()
+OPENAI_ENABLED = bool(os.getenv("OPENAI_API_KEY"))
+
 
 # Startup warning (safe, no return here)
 if not os.getenv("OPENAI_API_KEY"):
@@ -21,16 +23,18 @@ def root():
 
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
-    # Safety check: do not bill if key is missing
-    if not os.getenv("OPENAI_API_KEY"):
-        return (
-            jsonify(
-                {
-                    "error": "OpenAI API key not configured",
-                    "text": "Mock response (API key missing, OpenAI not called).",
-                }
-            ),
-            400,
+    if not OPENAI_ENABLED:
+        return jsonify(
+            {
+                "text": (
+                    "Mock analysis response.\n\n"
+                    "Lipinski assessment: uncertain.\n"
+                    "Toxicity risk: uncertain.\n"
+                    "Drug-likeness: uncertain.\n\n"
+                    "(OpenAI API key not configured.)"
+                ),
+                "mock": True,
+            }
         )
 
     # For now, hardcode SMILES (UI input comes later)
