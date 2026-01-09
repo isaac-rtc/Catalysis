@@ -1,6 +1,7 @@
 import base64
 import numpy as np
 import xgboost as xgb
+import matplotlib.cm as cm
 from flask import Flask, request, jsonify, render_template
 from rdkit import Chem
 from rdkit.Chem import AllChem, rdMolDescriptors
@@ -74,7 +75,8 @@ def predict():
                 m, atomId=i, radius=2, nBits=2048, fpType="bv"
             ),
             xgb_proba_wrapper,
-            draw2d=drawer,  # This tells RDKit to use our canvas
+            draw2d=drawer,
+            colorMap=cm.PiYG_r,  # Reversed color mapping
         )
 
         # 3. Finalize the drawing
@@ -107,4 +109,4 @@ def predict():
 print("test")
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5008)
+    app.run(debug=True, port=8006)
