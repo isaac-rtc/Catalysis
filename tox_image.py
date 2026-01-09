@@ -4,6 +4,7 @@ import xgboost as xgb
 import matplotlib.cm as cm
 from flask import Flask, request, jsonify, render_template
 from rdkit import Chem
+import rdkit.Chem.Draw as Draw
 from rdkit.Chem import AllChem, rdMolDescriptors
 from rdkit.Chem.Draw import SimilarityMaps
 from sklearn.preprocessing import LabelEncoder
@@ -109,4 +110,4 @@ def predict():
 print("test")
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8006)
+    app.run(debug=True, port=8008)
